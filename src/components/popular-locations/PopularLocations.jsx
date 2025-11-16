@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import Dehi from '../../../public/assets/delhi.jpg';
 import Berlin from '../../../public/assets/berlin.jpg';
@@ -5,32 +6,16 @@ import Paris from '../../../public/assets/paris.jpg';
 import Dubai from '../../../public/assets/dubai.jpg';
 import { Cardo } from 'next/font/google';
 import { Card } from './Card';
+import { useQuery } from '@tanstack/react-query';
+import { getPopularPlaces } from './service';
 
 export const PopularLocations = () => {
-    const data = [
-        {
-            image: Dehi,
-            city: 'Dehi',
-            numOfPlaces: 73,
-        },
+    const {data, isLoading} = useQuery({
+        queryFn:  getPopularPlaces,
+        queryKey: ["popular-listings"]
+    })
 
-        {
-            image: Berlin,
-            city: 'Berlin',
-            numOfPlaces: 34,
-        },
-        {
-            image: Paris,
-            city: 'Paris',
-            numOfPlaces: 52,
-        },
-        {
-            image: Dubai,
-            city: 'Dubai',
-            numOfPlaces: 27,
-        },
-    ];
-
+  
     return (
         <div className="h-full w-full my-36">
             <div className="h-full w-5/6 mx-auto flex flex-col justify-start">

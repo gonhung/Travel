@@ -7,8 +7,8 @@ export async function GET(req){
         const { searchParams } = new URL(req.url)
 
         const location = searchParams.get("location")
-        const min_price = searchParams.get("min_price")
-        const max_price = searchParams.get("max_price")
+        const min_price = Number(searchParams.get("min_price")) ?? 0
+        const max_price = Number(searchParams.get("max_price")) ?? 0
         const type = searchParams.get("type")
 
         const listings = await db.listing.findMany({
@@ -19,6 +19,9 @@ export async function GET(req){
                 },
                 location,
                 type
+            },
+            include: {
+                reviews: true
             }
         })
 

@@ -24,9 +24,9 @@ export async function GET(req){
                     listing: true
                 }
         })
+        return NextResponse.json(userReservation)
        }
 
-       return NextResponse.json(userReservation)
 
     } catch (error) {
         return NextResponse.json(error)
@@ -39,7 +39,7 @@ export async function POST(req){
         const body = await req.json()
 
         const {
-            starDate,
+            startDate,
             endDate,
             listingId,
             daysDifference
@@ -60,7 +60,7 @@ export async function POST(req){
             return reservedDates
         })
 
-        const getDates = getDatesInRange(starDate, endDate)
+        const getDates = getDatesInRange(startDate, endDate)
         const isUnavailable = allBookedDates.some((data) => getDates.includes(date))
 
         if(isUnavailable) {
@@ -69,7 +69,7 @@ export async function POST(req){
             })
         }
 
-        const newReservation = await db.reservation.create({
+        const newReservation = await db.reservations.create({
             data: {
                 startDate,
                 endDate,
@@ -82,6 +82,9 @@ export async function POST(req){
         return NextResponse.json(newReservation)
 
     } catch (error) {
-        return NextResponse.json(error)
+        return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
     }
 }

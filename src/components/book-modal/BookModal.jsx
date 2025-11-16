@@ -6,8 +6,13 @@ import React, { use, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { DateRange, DateRangePicker } from 'react-date-range';
 import Button from '@/ui/Button';
+import { redirectToCheckout } from './service';
 
-const BookModal = ({ handleHideModal }) => {
+const BookModal = ({ 
+   listing,
+    handleHideModal 
+}) => {
+
     const [isLoading, setIsLoading] = useState(false)
     const [dateRange, setDateRange] = useState([
         new Date(new Date().setDate(new Date().getDate + 7)),
@@ -39,7 +44,7 @@ const BookModal = ({ handleHideModal }) => {
 
         const daysDifference = calcDaysDiff()
 
-        await redirectToCheckout(createNewListing, startDate, endDate, daysDifference)
+        await redirectToCheckout(listing, startDate, endDate, daysDifference)
 
         setIsLoading(false)
 
@@ -68,7 +73,7 @@ const BookModal = ({ handleHideModal }) => {
                     <DateRangePicker
                         ranges={[selectionRange]}
                         minDate={new Date()}
-                        //disableDates
+                        disableDates = {listing?.reservation?.flatMap(({ reservedDates})=> reservedDates)}
                         onChange={({ selection }) => {
                             setDateRange([
                                 selection.startDate,

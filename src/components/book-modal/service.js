@@ -8,6 +8,7 @@ export const redirectToCheckout = async(
     daysDifference
 ) => {
     try {
+        console.log("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
         const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
         if(!stripe) throw new Error("Stripe failed to initialize")

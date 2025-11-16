@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 import { useId } from "react";
 import Stripe from "stripe"
 import { email } from "zod";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
     apiVersion: ""
 })
 
@@ -36,8 +35,8 @@ export async function POST(req) {
             payment_method_types: ["card"],
             line_items : stripe_obj,
             mode: "payment",
-            success_url: "http://locahost:3000/succes-page",
-            cancel_url: "http://locahost:3000",
+            success_url: "http://localhost:3000/success-page",
+            cancel_url: "http://localhost:3000",
             metadata: {
                 startDate,
                 endDate,
@@ -51,7 +50,10 @@ export async function POST(req) {
 
         return NextResponse.json({sessionId: session.id})
     } catch (error) {
-        return NextResponse.error(error)
+        return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
     }
 }
 
@@ -64,15 +66,18 @@ export async function DELETE(req) {
         const refundedPayment = await stripe.refunds.create({
             charge: chargeId
         })
-
+        console.log(refundedPayment)
         if(refundedPayment.status !== "succeeded"){
             return NextResponse.error({
-                error: "Can't cancel the reservation with an id of" +id
+                error: "Can't cancel the reservation with an id of" +reservationId
             })
         }
         return NextResponse.json({message: "Successfully cancelled the reservation"})
     } catch (error) {
-        return NextResponse.error(error)
+       return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
         
     }
 }

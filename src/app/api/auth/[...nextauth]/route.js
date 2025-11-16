@@ -1,9 +1,8 @@
-import {PrismaAdapter} from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcryptjs from "bcryptjs"
 import db from "@/lib/db"
-import { adapter } from "next/dist/server/web/adapter"
 
 export const authOptions = {
     adapter: PrismaAdapter(db),
@@ -11,11 +10,11 @@ export const authOptions = {
         CredentialsProvider({
             name: "credentials",
             credentials: {
-                email: {label: "email", type: "text"},
-                password: {label: "password", type: "password"}
+                email: { label: "email", type: "text" },
+                password: { label: "password", type: "password" }
             },
             async authorize(credentials) {
-                const {email, password} = credentials
+                const { email, password } = credentials
 
                 const user = await db.user.findUnique({
                     where: {
@@ -23,7 +22,7 @@ export const authOptions = {
                     }
                 })
 
-                if(!user){
+                if (!user) {
                     throw new Error("Invalid input")
                 }
 
@@ -36,7 +35,6 @@ export const authOptions = {
 
                     return currentUser
                 }
-                
             }
         })
     ],
@@ -48,12 +46,12 @@ export const authOptions = {
         signIn: "/login"
     },
     callbacks: {
-        jwt({ token, user}) {
-            if (user) token.isAdim = user.isAdim
+        jwt({ token, user }) {
+            if (user) token.isAdmin = user.isAdmin
             return token
         },
-        session({ session, token}) {
-            session.user.isAdim = token.isAdim
+        session({ session, token }) {
+            session.user.isAdmin = token.isAdmin
             return session
         }
     }
@@ -61,4 +59,4 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions)
 
-export { handler as GET, handler as POST}
+export { handler as GET, handler as POST }

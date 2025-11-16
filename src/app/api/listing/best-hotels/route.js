@@ -7,12 +7,17 @@ export async function GET(req)
     try {
          const listings = await db.listing.findMany({
             include: {
-                review : true
+                reviews : true
             }
          })
 
          const sortListings = calcAndSorListings(listings).slice(0,4)
+         console.log('sortListings', sortListings);
+         return NextResponse.json(sortListings)
     } catch (error) {
-        return NextResponse.error(error)
+        return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
     }
 }

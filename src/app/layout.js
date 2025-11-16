@@ -1,8 +1,8 @@
 "use client"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { LayoutProvider } from "@/components/layoutProvider/LayoutProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import LayoutProvider from "@/components/layoutProvider/LayoutProvider";
 import Toast from "@/utils/toast";
 import Provider from "@/utils/sessionProvider";
 

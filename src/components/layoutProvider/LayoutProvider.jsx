@@ -11,9 +11,9 @@ export const LayoutProvider = ({ children }) => {
     return (
         <>
             <QueryClientProvider client={queryClient}>
-                {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
+                {pathname !== '/login' && pathname !== '/signup' && !pathname.includes("/admin") && <Navbar />}
                 {children}
-                {pathname !== '/login' && pathname !== '/signup' && <Footer />}
+                {pathname !== '/login' && pathname !== '/signup'&& !pathname.includes("/admin") && <Footer />}
             </QueryClientProvider>
         </>
     );

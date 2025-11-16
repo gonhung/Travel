@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(req, ctx){
     try {
-        const { id } = ctx.params.id
+        const { id } = ctx.params;
 
         const currentUser = await getCurrentUser()
 
@@ -29,6 +29,9 @@ export async function DELETE(req, ctx){
 
         return NextResponse.json({message: " Successfully deleted reservation with id of " + id}, { status: 200})
     } catch (error) {
-        return NextResponse.json(error)
+        return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
     }
 }

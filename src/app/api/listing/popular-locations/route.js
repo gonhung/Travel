@@ -9,53 +9,53 @@ import Delhi from "../../../../../public/assets/Delhi.jpg"
 import db from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export async function GRT(req){
+export async function GET(req){
     try {
-    const abudhabi_listings = await db.listings.count({
+    const abudhabi_listings = await db.listing.count({
         where: {
             location: "abu-dhabi"
         }
     })
 
-    const dubai_listings = await db.listings.count({
+    const dubai_listings = await db.listing.count({
         where: {
             location : "dubai"
         }
     })
 
-    const mumbai_listings = await db.listings.count({
+    const mumbai_listings = await db.listing.count({
         where: {
             location : "mumbai"
         }
     })
 
-    const delhi_listings = await db.listings.count({
+    const delhi_listings = await db.listing.count({
         where: {
             location : "delhi"
         }
     })
 
 
-    const berlin_listings = await db.listings.count({
+    const berlin_listings = await db.listing.count({
         where: {
             location : "berlin"
         }
     })
 
-    const hamburg_listings = await db.listings.count({
+    const hamburg_listings = await db.listing.count({
         where: {
             location : "hamburg"
         }
     })
 
-    const st_tropez_listings = await db.listings.count({
+    const st_tropez_listings = await db.listing.count({
         where: {
             location : "st_tropez"
         }
     })
     
 
-    const paris_listings = await db.listings.count({
+    const paris_listings = await db.listing.count({
         where: {
             location : "paris"
         }
@@ -108,6 +108,9 @@ export async function GRT(req){
 
     return NextResponse.json(sortedResults)
     } catch (error) {
-        return NextResponse.json.error(error)
+        return NextResponse.json(
+      { message: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
     }
 }

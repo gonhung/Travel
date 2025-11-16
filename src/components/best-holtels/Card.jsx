@@ -5,14 +5,17 @@ import Link from 'next/link';
 import { format } from 'currency-formatter';
 
 export const Card = ({ place }) => {
+    console.log( place)
     return (
         <Link
-            href={'/details/1'}
+            href={`/details/${place.id}`}
             className="cursor-pointer h-[500px] w-[350px] flex-wrap rounded-xl shadow-md "
         >
             <div className="relative h-2/3 w-full">
                 <Image
-                    src={place.image}
+                    src={place?.imageUrls[0]}
+                    width={600}
+                    height={600}
                     className="h-full relative w-full overflow-hidden rounded-tl-xl object-cover"
                     alt="Location's image"
                 />
@@ -28,13 +31,13 @@ export const Card = ({ place }) => {
                     </h2>
                     <span className="p-2 rounded-full bg-blue-600 text-white flex items-center gap-2">
                         <AiFillStar color="white" />
-                        <span className="text-white">{place.reviews}</span>
+                        <span className="text-white">{place.avgRating}</span>
                     </span>
                 </div>
                 {/* price & review */}
                 <div className="mt-6 flex justify-between items-center">
                     <span className="text-slate-600">
-                        {format(place.price, { locale: 'en-US' })}
+                        {format(place.pricePerNight, { locale: 'en-US' })}
                         <span className="ml-2">per night</span>
                     </span>
                     <button className="cursor-pointer py-2 px-6 text-white bg-blue-500">

@@ -1,13 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { AiOutlineHome, AiOutlineUser } from 'react-icons/ai';
-import { signOut} from "next-auth"
+import { signOut, useSession } from "next-auth/react"
+
 import React, { useEffect, useState } from 'react';
 
 export const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-
+    const { data: session } = useSession()
     const toggleModal = () => setShowModal((prev) => !prev);
 
     useEffect(() => {
@@ -41,10 +42,15 @@ export const Navbar = () => {
                                 onClick={toggleModal}
                                 className="absolute top-16 right-[210px] shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl"
                             >
+                                {session?.user?.isAdmin &&
+                                    <Link className="bg-red-500 text-white px-1 py-2 rounded-xl" href='/admin/dashboard'>
+                                        Admin Dashboard
+                                    </Link>
+                                }
                                 <Link href="/reservations">
                                     Reservations
                                 </Link>
-                                <button onClick={() => signOut()} className="text-slate-500 text-center">
+                                <button onClick={() => signOut()}  className="text-slate-500 text-center">
                                     Logout
                                 </button>
                             </div>

@@ -10,4 +10,6 @@ export const getDatesInRange = (startDate, endDate) => {
         dates.push(new Date(dateInMilliseconds).getTime())
         dateInMilliseconds.setDate(dateInMilliseconds.getDate() +1)
     }
+
+    return dates
 }
